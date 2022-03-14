@@ -1,24 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import useQuery from './hooks/useQuery';
 
-function App() {
+const App = (props: any) => {
+  let [authenticated, setAuthenticated] = useState<boolean>(false)
+  let [accessToken, setAccessToken] = useState<string>()
+  let query = useQuery();
+
+  const handleLogin = () => {
+    window.location.href = 'https://7ztjdgzh3e.execute-api.ap-southeast-2.amazonaws.com/connect/strava/redirect?callback=http://localhost:3000'
+  }
+
+  useEffect(() => {
+    if (query) {
+      const accessToken = query.get('access_token')
+      if (accessToken !== null) {
+        setAuthenticated(true)
+        setAccessToken(accessToken)
+        localStorage.setItem('access_token', accessToken)
+      }
+    }
+  }, [query])
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken) {
+      setAuthenticated(true)
+      setAccessToken(accessToken)
+    }
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    
+    <div>
+      <button onClick={handleLogin}>Login</button>
+      {authenticated && (
+        <div>Authenticated! {accessToken}</div>
+      )}
     </div>
   );
 }
