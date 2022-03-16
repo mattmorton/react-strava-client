@@ -2,12 +2,13 @@ import React from 'react'
 import { Activity } from '../models';
 import { formatRelative } from 'date-fns';
 import { secondsToTimeString } from '../utils/time';
+import WrappedGoogleMap from './GoogleMap';
 
 const ActivityCard = (props: { activity: Activity }) => {
   let { activity } = props;
   return (
     <>
-    <div className="p-4 mb-4 max-w-md bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <div className="p-4 mb-4 max-w-xl bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
         <h3 className="font-bold text-gray-900 dark:text-white">{activity.name}</h3>
         <p className="text-xs">{formatRelative(new Date(activity.start_date_local), new Date())}</p>
         <div className="grid grid-cols-4 gap-4 my-4">
@@ -28,9 +29,13 @@ const ActivityCard = (props: { activity: Activity }) => {
             <h3 className="mb-2 font-bold text-gray-900 dark:text-white">{secondsToTimeString(activity.elapsed_time)}</h3>
           </div>
         </div>
-        <a href="#">
+        <div>
+
+          <WrappedGoogleMap center={{ lat: activity.start_latitude, lng: activity.start_longitude}} zoom={15}></WrappedGoogleMap>
+        </div>
+        {/* <a href="#">
             <img src="https://picsum.photos/600" alt="" />
-        </a>
+        </a> */}
     </div>
     </>
   )
