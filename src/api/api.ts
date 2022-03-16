@@ -1,4 +1,3 @@
-import queryString from 'querystring'
 import { ApiResponse, responseKO, responseOK } from './model'
 
 export interface RequestOptions<T = any> {

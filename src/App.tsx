@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import AuthButton from './components/AuthButton';
+import Home from './components/Home';
 import useQuery from './hooks/useQuery';
 
 const App = (props: any) => {
-  let [authenticated, setAuthenticated] = useState<boolean>(false)
+  let [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   let [accessToken, setAccessToken] = useState<string>()
+
   let query = useQuery();
 
   const handleLogin = () => {
     window.location.href = 'https://7ztjdgzh3e.execute-api.ap-southeast-2.amazonaws.com/connect/strava/redirect?callback=http://localhost:3000'
   }
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setAccessToken(undefined)
+    localStorage.removeItem('access_token')
+  }
+
   useEffect(() => {
     if (query) {
       const accessToken = query.get('access_token')
       if (accessToken !== null) {
-        setAuthenticated(true)
+        setIsAuthenticated(true)
         setAccessToken(accessToken)
         localStorage.setItem('access_token', accessToken)
       }
@@ -25,19 +34,24 @@ const App = (props: any) => {
   useEffect(() => {
     const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
-      setAuthenticated(true)
+      setIsAuthenticated(true)
       setAccessToken(accessToken)
     }
   }, [])
 
   return (
-    
+    <>
+    <nav className="flex justify-end bg-slate-50 p-2">
+      <AuthButton isAuthenticated={isAuthenticated} onLogout={handleLogout} onLogin={handleLogin}></AuthButton>
+    </nav>
     <div>
-      <button onClick={handleLogin}>Login</button>
-      {authenticated && (
-        <div>Authenticated! {accessToken}</div>
-      )}
+      {isAuthenticated && (
+        <>
+        <Home accessToken={accessToken}></Home>
+        </>
+        )}
     </div>
+    </>
   );
 }
 
