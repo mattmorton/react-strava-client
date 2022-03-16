@@ -6,7 +6,7 @@ import useQuery from './hooks/useQuery';
 
 const App = (props: any) => {
   let [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-  let [accessToken, setAccessToken] = useState<string>()
+  let [accessToken, setAccessToken] = useState<string>('')
 
   let query = useQuery();
 
@@ -16,9 +16,17 @@ const App = (props: any) => {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setAccessToken(undefined)
+    setAccessToken('')
     localStorage.removeItem('access_token')
   }
+  
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken) {
+      setIsAuthenticated(true)
+      setAccessToken(accessToken)
+    }
+  }, [])
 
   useEffect(() => {
     if (query) {
@@ -31,26 +39,14 @@ const App = (props: any) => {
     }
   }, [query])
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-    if (accessToken) {
-      setIsAuthenticated(true)
-      setAccessToken(accessToken)
-    }
-  }, [])
-
   return (
     <>
     <nav className="flex justify-end bg-slate-50 p-2">
       <AuthButton isAuthenticated={isAuthenticated} onLogout={handleLogout} onLogin={handleLogin}></AuthButton>
     </nav>
-    <div>
-      {isAuthenticated && (
-        <>
-        <Home accessToken={accessToken}></Home>
-        </>
-        )}
-    </div>
+    <main>
+      <Home accessToken={accessToken} isAuthenticated={isAuthenticated}></Home>
+    </main>
     </>
   );
 }

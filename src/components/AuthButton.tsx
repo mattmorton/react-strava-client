@@ -1,4 +1,4 @@
-const AuthButton = (props:any) => {
+const AuthButton = (props: { isAuthenticated: boolean, onLogout: () => void, onLogin: () => void }) => {
   const { isAuthenticated } = props;
 
   if (isAuthenticated) {

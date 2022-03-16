@@ -2,7 +2,7 @@ import React from 'react'
 import { Athlete } from '../models'
 
 const Profile = (props: { data: Athlete, isLoading: boolean, isError: boolean }) => {
-  let { data, isLoading } = props;
+  let { data } = props;
   return (
     <>
     {props.data && (
