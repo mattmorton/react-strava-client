@@ -3,15 +3,18 @@ import './App.css';
 import AuthButton from './components/AuthButton';
 import Home from './components/Home';
 import useQuery from './hooks/useQuery';
+import { useSettings } from './hooks/useSettings';
 
 const App = (props: any) => {
+  const context = useSettings();
+
   let [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   let [accessToken, setAccessToken] = useState<string>('')
 
   let query = useQuery();
 
   const handleLogin = () => {
-    window.location.href = 'https://7ztjdgzh3e.execute-api.ap-southeast-2.amazonaws.com/connect/strava/redirect?callback=http://localhost:3000'
+    window.location.href = `https://7ztjdgzh3e.execute-api.ap-southeast-2.amazonaws.com/connect/strava/redirect?callback=${context.host}`
   }
 
   const handleLogout = () => {

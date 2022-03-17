@@ -1,5 +1,6 @@
 import { Status, Wrapper } from '@googlemaps/react-wrapper';
-import React, { ReactElement, useEffect, useRef, useState } from 'react'
+import React, { ReactElement, useContext, useEffect, useRef, useState } from 'react'
+import { useSettings } from '../hooks/useSettings';
 
 const render = (status: Status): ReactElement => {
   console.log({ status })
@@ -14,7 +15,7 @@ const GoogleMap = (props: { center: google.maps.LatLngLiteral, zoom: number }) =
 
   useEffect(() => {
     if (componentRef.current && !map) {
-      setMap(new window.google.maps.Map(componentRef.current, { center, zoom }))
+      setMap(new window.google.maps.Map(componentRef.current, { center, zoom, mapTypeId: 'roadmap', zoomControl: false, mapTypeControl: false, streetViewControl: false }))
     }
   }, [componentRef, map, center, zoom])
 
@@ -25,9 +26,10 @@ const GoogleMap = (props: { center: google.maps.LatLngLiteral, zoom: number }) =
 
 const WrappedGoogleMap = (props: { center: google.maps.LatLngLiteral, zoom: number }) => {
   const { center, zoom } = props;
+  const context = useSettings();
   return (
-    <Wrapper apiKey='API_KEY' render={render}>
-      <GoogleMap center={center} zoom={zoom}></GoogleMap>
+    <Wrapper apiKey={context.googleApiKey} render={render}>
+      <GoogleMap center={center} zoom={zoom} ></GoogleMap>
     </Wrapper>
   )
 }
