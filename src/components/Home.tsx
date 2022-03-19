@@ -13,7 +13,6 @@ const Home = (props: { isAuthenticated: boolean, accessToken: string }) => {
         <div className="flex flex-row flex-wrap py-4">
           <aside className="w-full sm:w-1/3 md:w-1/4">
               <div className="sticky top-0 p-4 w-full">
-                <ProfileWithStravaData accessToken={props.accessToken} isAuthenticated={props.isAuthenticated} path={'athlete'}></ProfileWithStravaData>
               </div>
           </aside>
           <main role="main" className="w-full sm:w-2/3 md:w-3/4 p-4">

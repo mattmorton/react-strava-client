@@ -1,6 +1,6 @@
 import React from 'react'
 import { Activity } from '../models';
-import { formatRelative } from 'date-fns';
+import { format, formatRelative } from 'date-fns';
 import { secondsToTimeString } from '../utils/time';
 import WrappedGoogleMap from './GoogleMap';
 
@@ -10,7 +10,7 @@ const ActivityCard = (props: { activity: Activity }) => {
     <>
     <div className="p-4 mb-4 max-w-xl bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
         <h3 className="font-bold text-gray-900 dark:text-white">{activity.name}</h3>
-        <p className="text-xs">{formatRelative(new Date(activity.start_date_local), new Date())}</p>
+        <p className="text-xs">{formatRelative(new Date(activity.start_date), new Date())}</p>
         <div className="grid grid-cols-4 gap-4 my-4">
           <div>
             <p className="text-sm mb-2 text-gray-900 dark:text-white">Distance</p>
@@ -30,12 +30,8 @@ const ActivityCard = (props: { activity: Activity }) => {
           </div>
         </div>
         <div>
-
           <WrappedGoogleMap center={{ lat: activity.start_latitude, lng: activity.start_longitude}} zoom={15}></WrappedGoogleMap>
         </div>
-        {/* <a href="#">
-            <img src="https://picsum.photos/600" alt="" />
-        </a> */}
     </div>
     </>
   )
