@@ -3,6 +3,7 @@ import { Activity } from '../models';
 import { format, formatRelative } from 'date-fns';
 import { secondsToTimeString } from '../utils/time';
 import WrappedGoogleMap from './GoogleMap';
+import { formattedDistance } from '../utils/distance';
 
 const ActivityCard = (props: { activity: Activity }) => {
   let { activity } = props;
@@ -14,11 +15,11 @@ const ActivityCard = (props: { activity: Activity }) => {
         <div className="grid grid-cols-4 gap-4 my-4">
           <div>
             <p className="text-sm mb-2 text-gray-900 dark:text-white">Distance</p>
-            <h3 className="mb-2 font-bold text-gray-900 dark:text-white">{(activity.distance / 1000).toFixed(2)} / km</h3>
+            <h3 className="mb-2 font-bold text-gray-900 dark:text-white">{formattedDistance(activity.distance, true)}</h3>
           </div>
           <div>
             <p className="text-sm mb-2 text-gray-900 dark:text-white">Pace</p>
-            <h3 className="mb-2 font-bold text-gray-900 dark:text-white">{((activity.elapsed_time / 60) / (activity.distance / 1000)).toFixed(2)} / km</h3>
+            <h3 className="mb-2 font-bold text-gray-900 dark:text-white">{(activity.elapsed_time / 60) / parseInt(formattedDistance(activity.distance, false))} / km</h3>
           </div>
           <div>
             <p className="text-sm mb-2 text-gray-900 dark:text-white">Elevation</p>

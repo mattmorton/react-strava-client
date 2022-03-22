@@ -5,13 +5,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { SettingsProvider } from './context/SettingsContext';
+import { AuthProvider } from './context/AuthContext';
 
 render(
   <StrictMode>
     <BrowserRouter>
-    <SettingsProvider>
-      <App />
-    </SettingsProvider>
+      <SettingsProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </SettingsProvider>
     </BrowserRouter>
   </StrictMode>,
   document.getElementById('root')
