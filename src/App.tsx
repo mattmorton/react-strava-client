@@ -1,56 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import ActivityList from './components/ActivityList';
 import AuthButton from './components/AuthButton';
 import SummaryList from './components/SummaryList';
+import { AuthProvider } from './context/AuthContext';
+import { SettingsProvider } from './context/SettingsContext';
 import { useAuth } from './hooks/useAuth';
-import useQuery from './hooks/useQuery';
-import { useSettings } from './hooks/useSettings';
 
 
 
 const App = () => {
-  const { isError, isLoading, token } = useAuth();
-  const context = useSettings();
+  const { accessToken, isAuthenticated, init, login, logout } = useAuth();
   const id = '2751891'
-
-  let [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-  let [accessToken, setAccessToken] = useState<string>('')
-
-  let query = useQuery();
-
-  const handleLogin = () => {
-    window.location.href = `https://7ztjdgzh3e.execute-api.ap-southeast-2.amazonaws.com/connect/strava/redirect?callback=${context.host}`
-  }
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setAccessToken('')
-    localStorage.removeItem('access_token')
-  }
 
   const handleActivityTypeChanged = (args: any) => {
     console.log(args)
   }
   
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-    if (accessToken) {
-      setIsAuthenticated(true)
-      setAccessToken(accessToken)
-    }
+    init()
   }, [])
-
-  useEffect(() => {
-    if (query) {
-      const accessToken = query.get('access_token')
-      if (accessToken !== null) {
-        setIsAuthenticated(true)
-        setAccessToken(accessToken)
-        localStorage.setItem('access_token', accessToken)
-      }
-    }
-  }, [query])
 
   return (
     
@@ -58,7 +28,7 @@ const App = () => {
     <div className="flex h-screen bg-gray-100 font-sans">
       <div className="flex flex-row flex-wrap flex-1 flex-grow content-start">
         <nav className="flex justify-end w-full h-20 px-2 py-2 bg-red-200 ">
-          <AuthButton isAuthenticated={isAuthenticated} onLogout={handleLogout} onLogin={handleLogin}></AuthButton>
+          <AuthButton isAuthenticated={isAuthenticated} onLogout={logout} onLogin={login}></AuthButton>
         </nav>
         <aside className="flex flex-wrap content-start w-full md:max-w-sm md:h-full bg-gray-200 ">
           <SummaryList accessToken={accessToken} isAuthenticated={isAuthenticated} onActivityTypeChange={handleActivityTypeChanged}></SummaryList>
@@ -179,4 +149,16 @@ const App = () => {
   );
 }
 
-export default App;
+const AppWithContext = () => {
+  return (
+    <BrowserRouter>
+      <SettingsProvider>
+        <AuthProvider>
+          <App></App>
+        </AuthProvider>
+      </SettingsProvider>
+    </BrowserRouter>
+  )
+}
+
+export default AppWithContext;

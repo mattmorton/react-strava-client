@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
-import { SettingsContext } from '../context/SettingsContext'
+import { ISettingsContext, SettingsContext } from '../context/SettingsContext'
 
-export function useSettings(): any {
+export function useSettings(): ISettingsContext {
   return useContext<any>(SettingsContext)
 }

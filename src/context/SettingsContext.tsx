@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import { config } from '../conf'
 
-const SettingsContext = React.createContext<any>({})
+export interface ISettingsContext {
+  googleApiKey: string;
+  host: string;
+}
+
+const SettingsContext = React.createContext<any>({} as ISettingsContext)
 
 const SettingsProvider = (props: any) => {
 
