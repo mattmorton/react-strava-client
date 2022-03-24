@@ -3,7 +3,7 @@ import { Activity } from '../models';
 import { format, formatRelative } from 'date-fns';
 import { secondsToTimeString } from '../utils/time';
 import WrappedGoogleMap from './GoogleMap';
-import { formattedDistance } from '../utils/distance';
+import { formattedDistance, formattedPace } from '../utils/distance';
 
 const ActivityCard = (props: { activity: Activity }) => {
   let { activity } = props;
@@ -19,7 +19,7 @@ const ActivityCard = (props: { activity: Activity }) => {
           </div>
           <div>
             <p className="text-sm mb-2 text-gray-900 dark:text-white">Pace</p>
-            <h3 className="mb-2 font-bold text-gray-900 dark:text-white">{(activity.elapsed_time / 60) / parseInt(formattedDistance(activity.distance, false))} / km</h3>
+            <h3 className="mb-2 font-bold text-gray-900 dark:text-white">{formattedPace(activity.average_speed, true)}</h3>
           </div>
           <div>
             <p className="text-sm mb-2 text-gray-900 dark:text-white">Elevation</p>

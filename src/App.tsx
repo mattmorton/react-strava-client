@@ -154,7 +154,7 @@ const AppWithContext = () => {
     <BrowserRouter>
       <SettingsProvider>
         <AuthProvider>
-          <App></App>
+            <App></App>
         </AuthProvider>
       </SettingsProvider>
     </BrowserRouter>

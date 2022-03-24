@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { config } from '../conf'
 
 export interface ISettingsContext {
@@ -8,9 +8,9 @@ export interface ISettingsContext {
 
 const SettingsContext = React.createContext<any>({} as ISettingsContext)
 
-const SettingsProvider = (props: any) => {
+const SettingsProvider = ({ children }: { children: JSX.Element }) => {
 
-  return <SettingsContext.Provider value={config}>{props.children}</SettingsContext.Provider>
+  return <SettingsContext.Provider value={config}>{children}</SettingsContext.Provider>
 }
 
 export { SettingsContext, SettingsProvider }
