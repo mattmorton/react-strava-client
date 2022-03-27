@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
+import { useAuth } from '../hooks/useAuth';
 import useData from '../hooks/useData';
 import { ActivityType, AthleteStats } from '../models';
 import SummaryCard from './SummaryCard'
 
-const SummaryList = (props: { accessToken: string, isAuthenticated: boolean, onActivityTypeChange: (activityType: ActivityType) => void; }) => {
-  const { accessToken, isAuthenticated } = props;
-  const id = '2751891'
-  const { data, isLoading, isError } = useData({ accessToken, isAuthenticated, path: `athletes/${id}/stats` });
+const SummaryList = (props: { onActivityTypeChange: (activityType: ActivityType) => void; }) => {
+  const { athlete } = useAuth();
 
+  const { data, isLoading, isError } = useData({ path: `athletes/${athlete.id}/stats` });
   
   const [activityType, setActivityType] = useState(ActivityType.RUN)
   
@@ -18,7 +18,7 @@ const SummaryList = (props: { accessToken: string, isAuthenticated: boolean, onA
   
   return (
     <>
-    {!isLoading && (
+    {(!isLoading && athlete) && (
       <>
       <div className="flex w-full m-2 md:mx-6 md:my-6">
           <button onClick={() => toggleActivityType(ActivityType.RUN)} className="btn-primary flex-auto">
@@ -31,7 +31,7 @@ const SummaryList = (props: { accessToken: string, isAuthenticated: boolean, onA
             Swim
           </button>
         </div>
-        <div className='flex flex-col'>
+        <div className='w-full flex flex-col'>
           <SummaryCard title="All Time" data={data[`all_${activityType}_totals`]}></SummaryCard>
           <SummaryCard title="Year To Date" data={data[`ytd_${activityType}_totals`]}></SummaryCard>    
           <SummaryCard title="Recent" data={data[`recent_${activityType}_totals`]}></SummaryCard>    

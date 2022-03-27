@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/api";
+import { useAuth } from "./useAuth";
 
-const useData = (props: { accessToken: string, isAuthenticated: boolean, path: string, queryParams?: any }) => {
-  const { accessToken, isAuthenticated, path, queryParams } = props;
+const useData = (props: { path: string, queryParams?: any }) => {
+  const { path, queryParams } = props;
+  const { accessToken, isAuthenticated, athlete } = useAuth()
+
   const [data, setData] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -26,7 +29,7 @@ const useData = (props: { accessToken: string, isAuthenticated: boolean, path: s
     }
     
     let url = 'https://www.strava.com/api/v3'
-    if (!isAuthenticated) {
+    if (!isAuthenticated || !accessToken || !athlete) {
       return;
     }
     if (path) {
@@ -38,7 +41,7 @@ const useData = (props: { accessToken: string, isAuthenticated: boolean, path: s
     }
 
     fetchData(url);
-  }, [accessToken, isAuthenticated, path, queryParams]);
+  }, [accessToken, athlete, isAuthenticated, path, queryParams]);
 
   return { data, isLoading, isError };
 };

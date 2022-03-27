@@ -2,7 +2,6 @@ import React from 'react'
 import { Activity } from '../models';
 import { format, formatRelative } from 'date-fns';
 import { secondsToTimeString } from '../utils/time';
-import WrappedGoogleMap from './GoogleMap';
 import { formattedDistance, formattedPace } from '../utils/distance';
 
 const ActivityCard = (props: { activity: Activity }) => {
@@ -31,7 +30,7 @@ const ActivityCard = (props: { activity: Activity }) => {
           </div>
         </div>
         <div>
-          <WrappedGoogleMap center={{ lat: activity.start_latitude, lng: activity.start_longitude}} zoom={15}></WrappedGoogleMap>
+          {/* map goes here */}
         </div>
     </div>
     </>
