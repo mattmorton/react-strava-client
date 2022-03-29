@@ -10,6 +10,14 @@ const useData = (props: { path: string, queryParams?: any }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
+  function identity<Type>(arg: Type): Type {
+    return arg;
+  }
+
+  const gen = <Type extends unknown>(arg: Type) => {
+
+  }
+
   useEffect(() => {
     const fetchData = async (url: string) => {
       setIsLoading(true)

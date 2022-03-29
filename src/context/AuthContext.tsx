@@ -1,11 +1,11 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "../api/api";
 import useQuery from "../hooks/useQuery";
-import { Athlete } from "../models";
+import { DetailedAthlete } from "../models";
 
 export interface IAuthContext {
   accessToken: string;
-  athlete: Athlete;
+  athlete: DetailedAthlete;
   isAuthenticated: boolean;
   isLoading: boolean;
   isError: boolean;
@@ -18,7 +18,7 @@ const AuthContext = createContext<any>({} as IAuthContext)
 
 const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [accessToken, setAccessToken] = useState<string>();
-  const [athlete, setAthlete] = useState<Athlete>();
+  const [athlete, setAthlete] = useState<DetailedAthlete>();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isError, setIsError] = useState<any>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -62,7 +62,7 @@ const AuthProvider = ({ children }: { children: JSX.Element }) => {
       try {
         const response = await api(url, { token });
         if (response.ok) {
-          setAthlete(response.value as Athlete)
+          setAthlete(response.value as DetailedAthlete)
         } 
       } catch (e) {
         console.log(e)

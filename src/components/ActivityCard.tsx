@@ -1,14 +1,19 @@
 import React from 'react'
-import { Activity } from '../models';
+import { SummaryActivity } from '../models';
 import { format, formatRelative } from 'date-fns';
 import { secondsToTimeString } from '../utils/time';
 import { formattedDistance, formattedPace } from '../utils/distance';
 
-const ActivityCard = (props: { activity: Activity }) => {
+const ActivityCard = (props: { activity: SummaryActivity, onSelectActivity: (activity: SummaryActivity) => void }) => {
   let { activity } = props;
+
+  const handleActivityDetail = () => {
+    props.onSelectActivity(activity)
+  }
+
   return (
     <>
-    <div className="p-4 mb-4 max-w-xl bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <div className="p-4 mb-4 max-w-xl bg-white rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700" onClick={handleActivityDetail}>
         <h3 className="font-bold text-gray-900 dark:text-white">{activity.name}</h3>
         <p className="text-xs">{formatRelative(new Date(activity.start_date), new Date())}</p>
         <div className="grid grid-cols-4 gap-4 my-4">
